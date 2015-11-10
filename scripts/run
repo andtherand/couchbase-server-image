@@ -2,6 +2,15 @@
 
 exec 2>&1
 
+if [[ -e /firstrun ]]; then
+  echo "**** CONFIG: FIRST RUN"
+  source /scripts/first_run.sh
+else
+  post_start_action() {
+    : # no-op
+  }
+fi
+
 # Create directories where couchbase stores its data
 cd /opt/couchbase
 mkdir -p var/lib/couchbase \
@@ -13,3 +22,6 @@ mkdir -p var/lib/couchbase \
 
 chown -R couchbase:couchbase var
 exec chpst -ucouchbase  /opt/couchbase/bin/couchbase-server -- -noinput
+
+# callback when server is running
+post_start_action

@@ -17,7 +17,12 @@ ENV CB_VERSION=4.0.0 \
     CB_PACKAGE=couchbase-server-community_4.0.0-ubuntu14.04_amd64.deb \
     #CB_SHA256=950bf7eeebc139c1602d322d675e6d98 \
     PATH=$PATH:/opt/couchbase/bin:/opt/couchbase/bin/tools:/opt/couchbase/bin/install \
-    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/couchbase/lib
+    LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/couchbase/lib \
+    CB_USER=desmond \
+    CB_PASSWORD=secret_password \
+    CB_PORT=8091 \
+    CM_RAMSIZE=1024
+
 
 # Install couchbase
 RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
@@ -27,10 +32,11 @@ RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
 # Add runit script for couchbase-server
 COPY scripts/run /etc/service/couchbase-server/run
 
-COPY scripts/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY /scripts /scripts
+RUN chmod +x /scripts/entrypoint.sh /scripts/first_run.sh /etc/service/couchbase-server/run
+RUN touch /firstrun
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/scripts/entrypoint.sh"]
 CMD ["couchbase-server"]
 
 EXPOSE 8091 8092 8093 11207 11210 11211 18091 18092
