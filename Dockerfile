@@ -21,8 +21,8 @@ ENV CB_VERSION=4.0.0 \
     CB_USER=desmond \
     CB_PASSWORD=secret_password \
     CB_PORT=8091 \
-    CM_RAMSIZE=1024
-
+    CB_RAMSIZE=1024 \
+    CB_BUCKET=sync_gateway
 
 # Install couchbase
 RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
@@ -41,4 +41,3 @@ CMD ["couchbase-server"]
 
 EXPOSE 8091 8092 8093 11207 11210 11211 18091 18092
 VOLUME /opt/couchbase/var
-
