@@ -6,6 +6,7 @@ if [[ -e /firstrun ]]; then
   echo "**** CONFIG: FIRST RUN"
   source /scripts/first_run.sh
 else
+  echo " **** NORMAL RUN"
   post_start_action() {
     : # no-op
   }

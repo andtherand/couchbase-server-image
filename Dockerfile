@@ -33,11 +33,10 @@ RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
 COPY scripts/run /etc/service/couchbase-server/run
 
 COPY /scripts /scripts
-RUN chmod +x /scripts/entrypoint.sh /scripts/first_run.sh /etc/service/couchbase-server/run
-RUN touch /firstrun
+RUN chmod +x /scripts/first_run.sh /etc/service/couchbase-server/run && \
+        touch /firstrun
 
-ENTRYPOINT ["/scripts/entrypoint.sh"]
-CMD ["couchbase-server"]
+CMD ["/sbin/my_init"]
 
 EXPOSE 8091 8092 8093 11207 11210 11211 18091 18092
 VOLUME /opt/couchbase/var
