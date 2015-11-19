@@ -5,26 +5,27 @@ MAINTAINER Andy Ruck mychiara+docker at gmail com
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
     apt-get install -yq --no-install-recommends \
-        python-httplib2 && \
+        python-httplib2 \
+        inotify-tools && \
 
     apt-get autoclean && apt-get -y autoremove && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN groupadd -g 1000 couchbase && useradd couchbase -u 1000 -g couchbase -M
 
-ENV CB_VERSION=4.0.0 \
-    CB_RELEASE_URL=http://packages.couchbase.com/releases \
-    CB_PACKAGE=couchbase-server-community_4.0.0-ubuntu14.04_amd64.deb \
+ENV CB_VERSION=4.1.0-dp \
+    CB_RELEASE_URL=http://packages.couchbase.com/releases
+ENV CB_PACKAGE=couchbase-server_$CB_VERSION-ubuntu14.04_amd64.deb \
     #CB_SHA256=950bf7eeebc139c1602d322d675e6d98 \
     PATH=$PATH:/opt/couchbase/bin:/opt/couchbase/bin/tools:/opt/couchbase/bin/install \
     LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/couchbase/lib \
     CB_USER=desmond \
     CB_PASSWORD=secret_password \
-    CB_PORT=8091 \
     CB_RAMSIZE=1024 \
     CB_BUCKET=sync_gateway
 
 # Install couchbase
+# http://packages.couchbase.com/releases/4.1.0-dp/couchbase-server_4.1.0-dp-ubuntu14.04_amd64.deb
 RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
     #echo "$CB_SHA256  $CB_PACKAGE" | sha256sum -c - && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
