@@ -1,6 +1,28 @@
-#!/bin/sh
+#!/bin/bash
+
+CB_PID=/opt/couchbase/var/lib/couchbase/couchbase-server.pid
 
 exec 2>&1
+
+wait_for_boot () {
+  # Wait for mysql to finish starting up first.
+  while [[ ! -e $CB_PID ]] ; do
+      inotifywait -q -e create /run/couchbase/ >> /dev/null
+  done
+
+  post_start_action
+}
+
+if [[ -e "/firstrun" ]]; then
+  echo "**** CONFIG: FIRST RUN"
+  source /scripts/first_run.sh
+
+else
+  echo " **** NORMAL RUN"
+  post_start_action() {
+    : # no-op
+  }
+fi
 
 # Create directories where couchbase stores its data
 cd /opt/couchbase
@@ -12,4 +34,7 @@ mkdir -p var/lib/couchbase \
          var/lib/moxi
 
 chown -R couchbase:couchbase var
+
+wait_for_boot
+
 exec chpst -ucouchbase  /opt/couchbase/bin/couchbase-server -- -noinput
