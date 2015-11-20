@@ -1,28 +1,39 @@
 #!/bin/bash
 
 CB_PID=/opt/couchbase/var/lib/couchbase/couchbase-server.pid
+DESIRED_HTTP_CODE='301'
+SLEEP_TIME='5s'
+HTTP_STATE=$(/opt/couchbase/bin/curl http://localhost:8091 -s -w %{http_code} -o /dev/null)
+
+echo "**** RUN > HTTP_STATE = $HTTP_STATE"
 
 exec 2>&1
 
-wait_for_boot () {
-  # Wait for mysql to finish starting up first.
-  while [[ ! -e $CB_PID ]] ; do
-      inotifywait -q -e create /run/couchbase/ >> /dev/null
-  done
-
-  post_start_action
-}
-
 if [[ -e "/firstrun" ]]; then
-  echo "**** CONFIG: FIRST RUN"
+  echo "**** RUN > Config: First run"
   source /scripts/first_run.sh
 
 else
-  echo " **** NORMAL RUN"
+  echo " **** RUN > Normal"
   post_start_action() {
     : # no-op
   }
 fi
+
+wait_for_boot () {
+  # Wait for mysql to finish starting up first.
+  while [[ "$HTTP_STATE" -ne  "$DESIRED_HTTP_CODE" ]] ; do
+      #inotifywait -q -e create /run/couchbase/ >> /dev/null
+      let HTTP_STATE=$(/opt/couchbase/bin/curl http://localhost:8091 -s -w %{http_code} -o /dev/null)
+      echo "**** RUN > Info: State is: $HTTP_STATE"
+
+      echo "**** SLEEP > I am tired and going to sleep for $SLEEP_TIME"
+      sleep $SLEEP_TIME
+
+  done
+
+  post_start_action
+}
 
 # Create directories where couchbase stores its data
 cd /opt/couchbase
@@ -35,6 +46,6 @@ mkdir -p var/lib/couchbase \
 
 chown -R couchbase:couchbase var
 
-wait_for_boot
-
+wait_for_boot &
+echo "**** RUN > Starting Couchbase Server"
 exec chpst -ucouchbase  /opt/couchbase/bin/couchbase-server -- -noinput

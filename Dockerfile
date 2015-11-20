@@ -3,7 +3,9 @@
 FROM mychiara/base:1.0.1
 MAINTAINER Andy Ruck mychiara+docker at gmail com
 
+# remove curl because there seem to be conflicts because cb-server ships with curl
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
+    apt-get remove -yq curl && \
     apt-get install -yq --no-install-recommends \
         python-httplib2 \
         inotify-tools && \

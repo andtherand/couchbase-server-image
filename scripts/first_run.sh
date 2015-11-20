@@ -6,7 +6,7 @@ CB_RAMSIZE=${CB_RAMSIZE:-1024}
 CB_BUCKET=${CB_BUCKET:-sync_gateway}
 
 post_start_action() {
-  echo "**** > CREATE USER: $CB_USER"
+  echo "**** POST START > Create User: $CB_USER"
 
   couchbase-cli cluster-init \
     -c 127.0.0.1:8091  \
@@ -16,7 +16,7 @@ post_start_action() {
     --cluster-index-ramsize=$CB_RAMSIZE \
     --services=data,index,query
 
-  echo "**** > CREATE BUCKET: $CB_BUCKET"
+  echo "**** POST START > Create Bucket: $CB_BUCKET"
 
   couchbase-cli bucket-create -c 127.0.0.1:8091 -u $CB_USER -p $CB_PASSWORD \
     --bucket=$CB_BUCKET \
@@ -27,7 +27,5 @@ post_start_action() {
 
     rm  /firstrun
 
-    echo '**** > FINISHED INIT < ****'
+    echo '**** POST START > FINISHED INIT < ****'
 }
-
-#   couchbase-cli cluster-init -c 127.0.0.1:8091 --cluster-username=desmond  --cluster-password=secret_password --cluster-ramsize=1024  --cluster-index-ramsize=1024 --services=data,index,query
