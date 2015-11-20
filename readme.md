@@ -16,9 +16,11 @@ The major differences to the official image are:
 
 The major feature I was working on for a while is that the container has a default user and a default bucket set, so one can just start without having to do lots of configuration.
 
-The defaults username is ```desmond```. (I just recently finished watching LOST for the second time, and I like him a lot) 
-The default password is ```secret_password``` (Must be changed)
-The default bucket is called ```sync_gateway``` 
+The defaults username is ```desmond```. (I just recently finished watching LOST for the second time and I like him a lot).
+
+The default password is ```secret_password``` (Must be changed).
+
+The default bucket is called ```sync_gateway``` .
 
 ## Bugs and notices
 
@@ -31,4 +33,4 @@ When the container is building there are some messages popping up. Like the foll
 Anyways the container is working!
 
 ## License
-(c) mychiara | svs GPLv2 
+Copyright (c) mychiara | svs under the GPLv2 license.
