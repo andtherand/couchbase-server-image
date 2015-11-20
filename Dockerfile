@@ -27,9 +27,7 @@ ENV CB_PACKAGE=couchbase-server_$CB_VERSION-ubuntu14.04_amd64.deb \
     CB_BUCKET=sync_gateway
 
 # Install couchbase
-# http://packages.couchbase.com/releases/4.1.0-dp/couchbase-server_4.1.0-dp-ubuntu14.04_amd64.deb
 RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
-    #echo "$CB_SHA256  $CB_PACKAGE" | sha256sum -c - && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
 
 # Add runit script for couchbase-server
