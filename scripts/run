@@ -21,9 +21,8 @@ else
 fi
 
 wait_for_boot () {
-  # Wait for mysql to finish starting up first.
+  # wait for server to boot then call the post start action
   while [[ "$HTTP_STATE" -ne  "$DESIRED_HTTP_CODE" ]] ; do
-      #inotifywait -q -e create /run/couchbase/ >> /dev/null
       let HTTP_STATE=$(/opt/couchbase/bin/curl http://localhost:8091 -s -w %{http_code} -o /dev/null)
       echo "**** RUN > Info: State is: $HTTP_STATE"
 
