@@ -4,7 +4,7 @@ FROM mychiara/base:1.0.1
 MAINTAINER Andy Ruck mychiara+docker at gmail com
 
 # remove curl because there seem to be conflicts because cb-server ships with curl
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive && \
+RUN apt-get -q update && DEBIAN_FRONTEND=noninteractive && \
     apt-get remove -yq curl && \
     apt-get install -yq --no-install-recommends \
         python-httplib2 \
@@ -27,7 +27,7 @@ ENV CB_PACKAGE=couchbase-server_$CB_VERSION-ubuntu14.04_amd64.deb \
     CB_BUCKET=sync_gateway
 
 # Install couchbase
-RUN wget -N $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
+RUN wget -N -q $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
 
 # Add runit script for couchbase-server
