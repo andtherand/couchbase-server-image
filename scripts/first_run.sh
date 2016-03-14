@@ -6,7 +6,7 @@ CB_RAMSIZE=${CB_RAMSIZE:-1024}
 CB_BUCKET=${CB_BUCKET:-sync_gateway}
 
 post_start_action() {
-  echo "**** POST START > Create User: $CB_USER"
+  echo "**** POST START > Create user"
 
   couchbase-cli cluster-init \
     -c 127.0.0.1:8091  \
