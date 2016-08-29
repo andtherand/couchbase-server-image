@@ -15,9 +15,9 @@ RUN apt-get -q update && DEBIAN_FRONTEND=noninteractive && \
 
 RUN groupadd -g 1000 couchbase && useradd couchbase -u 1000 -g couchbase -M
 
-ENV CB_VERSION=4.1.0-dp \
+ENV CB_VERSION=4.1.0 \
     CB_RELEASE_URL=http://packages.couchbase.com/releases
-ENV CB_PACKAGE=couchbase-server_$CB_VERSION-ubuntu14.04_amd64.deb \
+ENV CB_PACKAGE=couchbase-server-community_$CB_VERSION-ubuntu14.04_amd64.deb \
     #CB_SHA256=950bf7eeebc139c1602d322d675e6d98 \
     PATH=$PATH:/opt/couchbase/bin:/opt/couchbase/bin/tools:/opt/couchbase/bin/install \
     LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/couchbase/lib \
