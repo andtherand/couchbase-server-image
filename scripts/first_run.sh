@@ -23,7 +23,7 @@ post_start_action() {
     --bucket=$CB_BUCKET \
     --bucket-type=couchbase \
     --bucket-ramsize=200 \
-    --bucket-replica=0
+    --bucket-replica=0 \
     --enable-flush=$CB_BUCKET_FLUSH
     #--bucket-port=$CB_BUCKET_PORT \
 
